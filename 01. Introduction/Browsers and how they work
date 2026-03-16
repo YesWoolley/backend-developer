@@ -1,0 +1,158 @@
+# How Browsers Work - Quiz (Questions and Answers)
+
+## 1. DNS Resolution
+
+**Question**
+When you type a URL into your browser and hit enter, the browser needs to find the IP address of the server before it can request the page. What process or mechanism does the browser use to resolve a domain name (like `google.com`) into an IP address?
+
+**Answer**
+**DNS lookup (Domain Name System lookup).**
+
+The browser checks in this order:
+
+1. Browser DNS cache
+2. OS DNS cache
+3. Router cache
+4. ISP DNS resolver
+5. Authoritative DNS server
+
+This translates the domain name into an IP address.
+
+---
+
+## 2. TCP Three-Way Handshake
+
+**Question**
+Once the browser has the IP address and establishes a TCP connection (the "three-way handshake"), it sends an HTTP request. What is the three-way handshake, and why is it necessary before the browser sends the request?
+
+**Answer**
+The TCP three-way handshake establishes a reliable connection between client and server.
+
+Steps:
+
+1. Client sends **SYN**
+2. Server replies **SYN-ACK**
+3. Client responds **ACK**
+
+This ensures both sides are ready to communicate and synchronizes sequence numbers for reliable data transfer.
+
+---
+
+## 3. DOM and CSSOM
+
+**Question**
+After the browser receives HTML from the server, it begins rendering. What are the two primary trees the browser constructs to render visual elements?
+
+**Answer**
+The browser constructs:
+
+- **DOM (Document Object Model)** from HTML
+- **CSSOM (CSS Object Model)** from CSS
+
+These trees represent webpage structure and styling.
+
+---
+
+## 4. Render Tree and Layout
+
+**Question**
+Once DOM and CSSOM are built, the browser combines them into a structure containing only visible nodes. What is this tree called, and what is the next rendering step that calculates each element's position and size?
+
+**Answer**
+The combined structure is the **Render Tree**.
+
+The next step is **Layout** (also called **Reflow**), where the browser calculates the position and size of each element.
+
+---
+
+## 5. Painting and Compositing
+
+**Question**
+After layout, the browser must draw pixels on screen. What is the process that converts layout data into pixels, and what final step combines layers for display?
+
+**Answer**
+
+- Converting layout information into pixels is **Painting**.
+- Combining layers into the final screen output is **Compositing**.
+
+---
+
+## 6. GPU and Rendering Layers
+
+**Question**
+Modern browsers use the GPU to speed up rendering, especially compositing. Why is moving compositing to the GPU beneficial, and what CSS property often triggers a new compositing layer?
+
+**Answer**
+GPU compositing improves performance because GPUs are optimized for parallel graphics work. This helps keep animations and scrolling smooth and reduces pressure on the main thread.
+
+A common CSS property that triggers a new compositing layer is:
+
+- `transform`
+
+---
+
+## 7. HTTP/2 and Multiplexing
+
+**Question**
+Browsers limit concurrent TCP connections to a single domain (often around 6). How does HTTP/2 help overcome this, and how is its data handling different from HTTP/1.1?
+
+**Answer**
+HTTP/2 uses **multiplexing**, so multiple requests and responses can share a single TCP connection at the same time.
+
+Key difference:
+
+- **HTTP/1.1:** Requests are mostly sequential.
+- **HTTP/2:** Uses interleaved binary streams.
+
+This reduces head-of-line blocking at the application protocol layer.
+
+---
+
+## 8. Same-Origin Policy
+
+**Question**
+Browsers prevent scripts on one page from reading data/cookies from another origin. What is this policy called, and what three parts of an origin must match?
+
+**Answer**
+The policy is the **Same-Origin Policy (SOP)**.
+
+An origin has three parts:
+
+1. **Protocol**
+2. **Domain (host)**
+3. **Port**
+
+All three must match for two resources to be same-origin.
+
+---
+
+## 9. Cross-Origin Requests
+
+**Question**
+Sometimes a site must allow requests from another origin (for example, frontend on `app.com` calling API on `api.com`). Since SOP blocks this by default, what mechanism allows the server to permit cross-origin requests?
+
+**Answer**
+The mechanism is **CORS (Cross-Origin Resource Sharing)**.
+
+The server allows cross-origin access by returning CORS headers, such as:
+
+- `Access-Control-Allow-Origin`
+
+This tells the browser which external origins may access the resource.
+
+---
+
+## 10. Event Loop
+
+**Question**
+JavaScript is single-threaded. If the browser runs heavy work, how does it avoid freezing the UI, and what roles do the Call Stack and Task Queue (Callback Queue) play?
+
+**Answer**
+JavaScript uses the **Event Loop**.
+
+- The **Call Stack** runs synchronous code.
+- Asynchronous operations are handled by **Web APIs**.
+- When done, callbacks are placed in the **Task Queue**.
+- The **Event Loop** moves queued tasks to the Call Stack when the stack is empty.
+
+This enables asynchronous behavior without blocking all UI interactions.
