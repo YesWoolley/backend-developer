@@ -1,158 +1,122 @@
-# How Browsers Work - Quiz (Questions and Answers)
 
-## 1. DNS Resolution
-
-**Question**
-When you type a URL into your browser and hit enter, the browser needs to find the IP address of the server before it can request the page. What process or mechanism does the browser use to resolve a domain name (like `google.com`) into an IP address?
-
-**Answer**
-**DNS lookup (Domain Name System lookup).**
-
-The browser checks in this order:
-
-1. Browser DNS cache
-2. OS DNS cache
-3. Router cache
-4. ISP DNS resolver
-5. Authoritative DNS server
-
-This translates the domain name into an IP address.
+# Browsers and How They Work — Quiz
 
 ---
 
-## 2. TCP Three-Way Handshake
+## 1. Which primary component of a browser is responsible for translating HTML, CSS, and JavaScript into a visual representation on the screen?
 
-**Question**
-Once the browser has the IP address and establishes a TCP connection (the "three-way handshake"), it sends an HTTP request. What is the three-way handshake, and why is it necessary before the browser sends the request?
+✗ The Networking Layer
+✗ The JavaScript Engine
+✓ **The Rendering Engine**
+✗ The UI Backend
 
-**Answer**
-The TCP three-way handshake establishes a reliable connection between client and server.
-
-Steps:
-
-1. Client sends **SYN**
-2. Server replies **SYN-ACK**
-3. Client responds **ACK**
-
-This ensures both sides are ready to communicate and synchronizes sequence numbers for reliable data transfer.
+> **Explanation:**
+> The Rendering Engine parses the requested content (HTML/XML) and style information (CSS) to display the resulting layout on the screen. The networking layer handles data fetching, the UI backend manages widgets, and the JavaScript engine executes script logic, but none of these are responsible for the structural rendering process.
 
 ---
 
-## 3. DOM and CSSOM
+## 2. When a browser encounters a `<script>` tag in the HTML without any specific attributes, what happens to the rendering process?
 
-**Question**
-After the browser receives HTML from the server, it begins rendering. What are the two primary trees the browser constructs to render visual elements?
+✓ **It pauses HTML parsing until the script is downloaded and executed.**
+✗ It continues rendering the page in the background while the script executes.
+✗ It immediately ignores the script and moves to the next DOM node.
+✗ It executes the script asynchronously without affecting the main thread.
 
-**Answer**
-The browser constructs:
-
-- **DOM (Document Object Model)** from HTML
-- **CSSOM (CSS Object Model)** from CSS
-
-These trees represent webpage structure and styling.
+> **Explanation:**
+> By default, scripts are "parser-blocking." When the browser hits a script tag, it must stop building the DOM, fetch the script, and execute it before it can continue parsing the rest of the HTML document.
 
 ---
 
-## 4. Render Tree and Layout
+## 3. What is the primary role of the Document Object Model (DOM) tree in the browser's workflow?
 
-**Question**
-Once DOM and CSSOM are built, the browser combines them into a structure containing only visible nodes. What is this tree called, and what is the next rendering step that calculates each element's position and size?
+✗ It stores the binary data of images and external assets.
+✗ It maintains a list of all active network requests and their headers.
+✓ **It serves as the programmatic interface representing the structure and content of the document.**
+✗ It tracks the history of user navigation to manage the "back" button functionality.
 
-**Answer**
-The combined structure is the **Render Tree**.
-
-The next step is **Layout** (also called **Reflow**), where the browser calculates the position and size of each element.
-
----
-
-## 5. Painting and Compositing
-
-**Question**
-After layout, the browser must draw pixels on screen. What is the process that converts layout data into pixels, and what final step combines layers for display?
-
-**Answer**
-
-- Converting layout information into pixels is **Painting**.
-- Combining layers into the final screen output is **Compositing**.
+> **Explanation:**
+> The DOM is a tree-like representation of the HTML document created by the parser. It allows programming languages, such as JavaScript, to manipulate the document's structure, style, and content dynamically.
 
 ---
 
-## 6. GPU and Rendering Layers
+## 4. In the context of browser rendering, what does the "Critical Rendering Path" describe?
 
-**Question**
-Modern browsers use the GPU to speed up rendering, especially compositing. Why is moving compositing to the GPU beneficial, and what CSS property often triggers a new compositing layer?
+✗ The order in which the browser fetches external CSS files.
+✓ **The sequence of steps the browser takes to convert HTML, CSS, and JS into pixels on the screen.**
+✗ The path taken by the browser to securely validate SSL certificates.
+✗ The logic flow used by the browser to determine the user's geographic location.
 
-**Answer**
-GPU compositing improves performance because GPUs are optimized for parallel graphics work. This helps keep animations and scrolling smooth and reduces pressure on the main thread.
-
-A common CSS property that triggers a new compositing layer is:
-
-- `transform`
+> **Explanation:**
+> The Critical Rendering Path refers to the specific stages—DOM construction, CSSOM construction, Layout, Paint, and Compositing—that the browser must complete to render the initial viewport content.
 
 ---
 
-## 7. HTTP/2 and Multiplexing
+## 5. What is the purpose of the CSS Object Model (CSSOM)?
 
-**Question**
-Browsers limit concurrent TCP connections to a single domain (often around 6). How does HTTP/2 help overcome this, and how is its data handling different from HTTP/1.1?
+✗ It defines the protocol for communicating with remote CSS servers.
+✗ It serves as a compressed binary format for transmitting styles.
+✓ **It describes the style rules associated with each node in the DOM tree.**
+✗ It acts as a garbage collection mechanism for unused CSS properties.
 
-**Answer**
-HTTP/2 uses **multiplexing**, so multiple requests and responses can share a single TCP connection at the same time.
-
-Key difference:
-
-- **HTTP/1.1:** Requests are mostly sequential.
-- **HTTP/2:** Uses interleaved binary streams.
-
-This reduces head-of-line blocking at the application protocol layer.
+> **Explanation:**
+> The CSSOM is a map of all CSS selectors and their corresponding properties. Once the browser has the DOM and the CSSOM, it merges them into a Render Tree to understand how elements should appear visually.
 
 ---
 
-## 8. Same-Origin Policy
+## 6. What occurs during the "Layout" phase of the rendering process?
 
-**Question**
-Browsers prevent scripts on one page from reading data/cookies from another origin. What is this policy called, and what three parts of an origin must match?
+✗ The browser fetches all external images from the server.
+✗ The browser compiles JavaScript into machine code.
+✓ **The browser calculates the exact geometric position and size of each element.**
+✗ The browser clears the memory cache of the previous page visit.
 
-**Answer**
-The policy is the **Same-Origin Policy (SOP)**.
-
-An origin has three parts:
-
-1. **Protocol**
-2. **Domain (host)**
-3. **Port**
-
-All three must match for two resources to be same-origin.
+> **Explanation:**
+> During the Layout (Reflow) phase, the browser traverses the render tree and calculates the coordinates, width, and height of every element within the viewport based on the CSS box model.
 
 ---
 
-## 9. Cross-Origin Requests
+## 7. What is the primary difference between the browser's "Paint" stage and the "Composite" stage?
 
-**Question**
-Sometimes a site must allow requests from another origin (for example, frontend on `app.com` calling API on `api.com`). Since SOP blocks this by default, what mechanism allows the server to permit cross-origin requests?
+✗ Paint is for JavaScript, while Composite is for HTML.
+✗ Paint is performed by the CPU, while Composite is only performed by the OS kernel.
+✓ **Paint fills in pixels, whereas Composite determines the draw order of layered elements.**
+✗ Paint occurs before the DOM is built, while Composite occurs after.
 
-**Answer**
-The mechanism is **CORS (Cross-Origin Resource Sharing)**.
-
-The server allows cross-origin access by returning CORS headers, such as:
-
-- `Access-Control-Allow-Origin`
-
-This tells the browser which external origins may access the resource.
+> **Explanation:**
+> Paint involves converting the layout into actual pixels (like filling in colors and borders), while the Composite stage organizes these painted "layers" into the correct order (z-index) to ensure elements overlap properly on the screen.
 
 ---
 
-## 10. Event Loop
+## 8. Which mechanism allows browsers to execute JavaScript code while the HTML parser continues its work?
 
-**Question**
-JavaScript is single-threaded. If the browser runs heavy work, how does it avoid freezing the UI, and what roles do the Call Stack and Task Queue (Callback Queue) play?
+✗ Synchronous Parsing
+✓ **Asynchronous loading (e.g., using 'async' or 'defer' attributes)**
+✗ Multi-threaded DOM access
+✗ DOM Shadowing
 
-**Answer**
-JavaScript uses the **Event Loop**.
+> **Explanation:**
+> The 'async' or 'defer' attributes on a script tag instruct the browser to download the script in the background without halting the main HTML parser, thus improving the "Time to Interactive" of the page.
 
-- The **Call Stack** runs synchronous code.
-- Asynchronous operations are handled by **Web APIs**.
-- When done, callbacks are placed in the **Task Queue**.
-- The **Event Loop** moves queued tasks to the Call Stack when the stack is empty.
+---
 
-This enables asynchronous behavior without blocking all UI interactions.
+## 9. What does the browser's "Network Layer" do when it receives an HTTP response?
+
+✗ It renders the HTML nodes immediately to the user.
+✗ It runs the JavaScript engine on the raw byte stream.
+✓ **It passes the data stream to the HTML parser for tokenization.**
+✗ It caches the user's session tokens in a remote database.
+
+> **Explanation:**
+> The networking layer is responsible for receiving raw bytes from the server. It then converts those bytes into characters and passes them to the tokenizer, which starts the process of building the DOM.
+
+---
+
+## 10. Why is the "Render Tree" different from the DOM tree?
+
+✗ The Render Tree is created before the DOM tree.
+✓ **The Render Tree only includes nodes that are visible and their styles.**
+✗ The Render Tree is stored in the cloud rather than local memory.
+✗ The Render Tree only contains JavaScript functions.
+
+> **Explanation:**
+> The DOM tree includes every node from the HTML (including hidden elements like <head> or display: none tags). The Render Tree filters these out, as it only tracks the elements that are required to actually draw the visual page content.
